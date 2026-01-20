@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Materiales para Drywall</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    #contenedor {
+        width: 80%;
+        margin: 50px auto;
+        text-align: center;
+    }
+    h1 {
+        color: #333;
+    }
+    label {
+        display: block;
+        font-size: 18px;
+        margin-top: 20px;
+    }
+    input[type="number"], select {
+        width: 100px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    p {
+        font-size: 18px;
+        margin-top: 20px;
+    }
+    ul {
+        text-align: left;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+<div id="contenedor">
+    <h1>Calculadora de Materiales para Drywall</h1>
+    <label for="alto">Alto de la División (en metros): </label>
+    <input type="number" id="alto" min="0.1" max="10" step="0.1" value="2"><br>
+    <label for="ancho">Ancho de la División (en metros): </label>
+    <input type="number" id="ancho" min="0.1" max="10" step="0.1" value="2"><br>
+    <label for="espesor">Espesor de la División (en mm): </label>
+    <select id="espesor">
+        <option value="35">35 mm</option>
+        <option value="65" selected>65 mm</option>
+        <option value="90">90 mm</option>
+    </select><br>
+    <button onclick="calcularMateriales()">Calcular</button>
+    <div id="resultado"></div>
+</div>
+
+<script>
+function calcularMateriales() {
+    var alto = parseFloat(document.getElementById("alto").value);
+    var ancho = parseFloat(document.getElementById("ancho").value);
+    var espesor = parseFloat(document.getElementById("espesor").value);
+    
+    // Calculamos la cantidad de placas de drywall necesarias (suponiendo que son de 1.22 m x 2.44 m)
+    var areaTotal = alto * ancho;
+    var areaPorPlaca = 1.22 * 2.44;
+    var placasNecesarias = Math.ceil(areaTotal / areaPorPlaca);
+    
+    // Calculamos la cantidad de rieles metálicos necesarios
+    var rielesNecesarios = Math.ceil((ancho * 2) / 3.0); // Rieles de 3.00 metros, se cortan en la mitad para usar tanto arriba como abajo
+    
+    // Calculamos la cantidad de parantes metálicos necesarios
+    var distanciaEntreParantes = 0.40; // Distancia entre cada parante
+    var placasUtilizadas = Math.ceil(ancho / 1.22); // Determinar el número de placas utilizadas
+    var parantesPorPlaca = 4; // Un parante al inicio, uno al final y los que se distribuyen cada 0.40 metros
+    var parantesNecesarios = (placasUtilizadas - 1) * 3 + parantesPorPlaca; // Ajustar la cantidad de parantes según el número de placas utilizadas
+    
+    // Calculamos la cantidad de tornillos, masilla y cinta de papel
+    var tornillos = placasNecesarias * 22; // Se asume 22 tornillos por placa
+    var masilla = Math.ceil(placasNecesarias / 5); // Se asume 5 kg de masilla por cada 25 placas
+    var cintaPapel = (placasNecesarias - 1) * alto; //
+// Calculamos la cantidad de tornillos, masilla y cinta de papel
+    var tornillos = placasNecesarias * 22; // Se asume 22 tornillos por placa
+    var masilla = Math.ceil(placasNecesarias / 5); // Se asume 5 kg de masilla por cada 25 placas
+    var cintaPapel = (placasNecesarias - 1) * alto; // Se necesita el alto de la unión de placas en metros
+
+    // Mostramos los resultados
+    var resultadoHTML = "<p>Materiales necesarios:</p>";
+    resultadoHTML += "<ul>";
+    resultadoHTML += "<li>Placas de Drywall (1.22m x 2.44m): " + placasNecesarias + "</li>";
+    resultadoHTML += "<li>Rieles metálicos (de 3.00 metros, en la parte superior e inferior): " + rielesNecesarios + "</li>";
+    resultadoHTML += "<li>Parantes metálicos: " + parantesNecesarios + "</li>";
+    resultadoHTML += "<li>Tornillos: " + tornillos + "</li>";
+    resultadoHTML += "<li>Masilla (5kg): " + masilla + "</li>";
+    resultadoHTML += "<li>Cinta de papel (metros): " + cintaPapel + "</li>";
+    resultadoHTML += "</ul>";
+    
+    document.getElementById("resultado").innerHTML = resultadoHTML;
+}
+</script>
+
+</body>
+</html>
